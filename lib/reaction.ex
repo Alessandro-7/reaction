@@ -23,11 +23,9 @@ defmodule Reaction do
     new_pairs =
       Enum.reduce(pairs, %{}, fn {[first | last] = key, value}, acc ->
         middle = Map.get(rules, key)
-        Map.update(acc, key, -value, fn v -> v - value end)
-        |> Map.update([first | [middle]], value, fn v -> v + value end)
+        Map.update(acc, [first | [middle]], value, fn v -> v + value end)
         |> Map.update([middle | last], value, fn v -> v + value end)
       end)
-      |> Map.merge(pairs, fn _k, v1, v2 -> v1 + v2 end)
 
     count_pairs(rules, step - 1, new_pairs)
   end
